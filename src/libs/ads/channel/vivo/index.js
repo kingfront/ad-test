@@ -18,6 +18,9 @@ export default {
     createInterstitialAd(obj) {
         return ad.createInterstitialAd(obj)
     },
+    preloadAd(obj) {
+        return ad.preloadAd(obj)
+    },
     // 原生 native 广告
     createNativeAd(obj) {
         return {

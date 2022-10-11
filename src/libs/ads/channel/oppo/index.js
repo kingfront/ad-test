@@ -6,7 +6,7 @@ const ad = require('@service.ad')
 export default {
     // 创建激励视频
     createRewardedVideoAd(obj) {
-        let reward =  ad.createRewardedVideoAd(obj)
+        let reward = ad.createRewardedVideoAd(obj)
         return reward
     },
     // Banner广告
@@ -20,5 +20,15 @@ export default {
     // 原生 native 广告
     createNativeAd(obj) {
         return ad.createNativeAd(obj)
+    },
+    // 原生广告，按照全局原生接口名称
+    preloadAd({ adUnitId, success, fail }) {
+        let nativeAd = ad.createNativeAd({ adUnitId })
+        nativeAd.load()
+        nativeAd.onLoad(function (res) {
+            success(res)
+        }, (err) => {
+            fail(err)
+        })
     }
 }

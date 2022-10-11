@@ -181,19 +181,17 @@ export default {
     // 需要同时兼容vivo、OPPO拉取原生广告
     let that = this
     const adUnitId = this.mockAdunitId('native')
-    const nativeAd = fad.createNativeAd({ adUnitId, type: 'native' })
-    nativeAd.load()
-    nativeAd.onLoad(function (res) {
-      if (res.adList && res.adList.length > 0) {
-        that.nativeAdInfo = res.adList[0]
+    fad.preloadAd({
+      adUnitId, type: 'native',
+      success: (res) => {
+        console.info(res)
+        if (res.adList && res.adList.length > 0) {
+          that.nativeAdInfo = res.adList[0]
+        }
+      }, fail: (res, code) => {
+        $utils.showToast(`原生视频error ${JSON.stringify(res)}`)
       }
-    }, (err) => {
-      console.log(err)
     })
-    nativeAd.onError((err) => {
-      console.log(1, err)
-    })
-
     this.hoverTap('onShowAdsNative')
   },
 

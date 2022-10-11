@@ -47,6 +47,12 @@ class FADSDK {
         return webAd
     }
 
+    // 原生视频
+    preloadAd(obj) {
+        let preloadAd = this.ads.preloadAd(obj)
+        return preloadAd
+    }
+
     // 处理个别平台缺失事件
     _makeNotEvent(adObj, array = []) {
         const eventArray = [...array, 'show', 'onLoad', 'offLoad', 'onClose', 'offClose', 'offError', 'destroy']
