@@ -1,0 +1,36 @@
+{
+  "package": "com.coodong.novel",
+  "name": "蜜橙小说",
+  "versionName": "1.0.8",
+  "versionCode": 108,
+  "minPlatformVersion": 1080,
+  "icon": "/assets/logo.png",
+  "features": [{ "name": "system.prompt" }, { "name": "system.router" }, { "name": "system.shortcut" }, { "name": "system.webview" }, { "name": "service.share" }, { "name": "system.fetch" }, { "name": "system.storage" }, { "name": "system.device" }, { "name": "service.texttoaudio" }, { "name": "service.ad" },{ "name": "system.webview" }],
+  "permissions": [{ "origin": "*" }],
+  "config": {
+    "logLevel": "debug",
+    "designWidth": 750
+  },
+  "router": {
+    "entry": "index",
+    "pages": {
+      "index": {
+        "component": "index"
+      }
+    }
+  },
+  "display": {
+    "titleBar": true,
+    "titleBarBackgroundColor": "#f4f6fa",
+    "titleBarTextColor": "#333333",
+    "menu": true,
+    "pages": {
+      "index": {
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "statusBarBackgroundOpacity": 0
+      }
+    }
+  },
+  "API_HOST": "https://api.tianjinzhaofa.cn"
+}

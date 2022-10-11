@@ -1,0 +1,222 @@
+<template>
+  <div class="wrapper">
+    <input class="btn" type="button" value="激励视频" onclick="onShowAdsRewarded" />
+    <input class="btn" type="button" value="banner" onclick="onShowAdsBanner" />
+    <input class="btn" type="button" value="插屏" onclick="onShowAdsInterstitial" />
+    <input class="btn" type="button" value="原生广告" onclick="onShowAdsNative" />
+    <input class="btn" type="button" value="web" onclick="onShowAdsWeb" />
+    <div if="{{ nativeAdInfo }}" class="ad__wrapper">
+      <div for="{{nativeAdInfo && nativeAdInfo.imgUrlList}}" tid="uniqueId" class="image_box">
+        <div class="item_wrapper" @click="onAdClick">
+          <image src="{{$item}}"></image>
+          <text>广告</text>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import prompt from '@system.prompt'
+import device from '@system.device'
+import FADSDK from '/src/libs/ads/FADSDK'
+import ad from '@service.ad'
+
+let fad
+let interstitialAd
+export default {
+  private: {
+    showAd: false,
+    title: '广告-demo',
+    nativeAdInfo: {},
+    adsRepeatFlg: false,
+    provider: '',
+    adUnitId: 'e936776f5ed3432f9d7bf8439b9234c5'
+  },
+
+  // 初始化
+  onInit() {
+    const ad = require("@service.ad")
+    this.provider = ad.getProvider()
+    fad = new FADSDK({ provider: this.provider })
+    this.$page.setTitleBar({ text: '广告聚合demo' })
+  },
+
+  // 广告位模拟
+  mockAdunitId(type) {
+    const mockInfo = {
+      vivo: {
+        rewarded: 'e936776f5ed3432f9d7bf8439b9234c5',
+        interstitial: '1e8d7f6f1fae48e384f0a087a7498c2a',
+        banner: '644127',
+        native: '192cf47e6c844f25954a9cdc38b97244'
+      },
+      OPPO: {
+        rewarded: '644125',
+        interstitial: '644107',
+        banner: '644127',
+        native: '644127'
+      }
+    }
+    return mockInfo[this.provider][type]
+  },
+
+  // 激励视频
+  onShowAdsRewarded() {
+    const adUnitId = this.mockAdunitId('rewarded')
+    const revideo = fad.createRewardedVideoAd({ adUnitId })
+    revideo.onLoad(() => {
+      $utils.showToast('激励视频加载成功222')
+      revideo.show()
+    }, (err) => {
+      $utils.showToast(`激励视频load 失败, err = ${JSON.stringify(err)}`)
+    })
+  },
+
+  // banner 广告
+  onShowAdsBanner() {
+    $utils.showToast('暂无广告位')
+    const adUnitId = this.mockAdunitId('banner')
+    let bannerAd = fad.createBannerAd({
+      adUnitId,
+      style: {
+        width: 375
+      }
+    })
+    bannerAd.onLoad().then(() => {
+      $utils.showToast('banner广告加载成功')
+      bannerAd.show()
+    }, (err) => {
+      $utils.showToast(`banner广告onload失败, err = ${JSON.stringify(err)}`)
+    })
+  },
+
+  // 插屏广告
+  onShowAdsInterstitial() {
+    const adUnitId = this.mockAdunitId('interstitial')
+    if (!interstitialAd) {
+      interstitialAd = fad.createInterstitialAd({ adUnitId })
+      interstitialAd.onLoad(() => {
+        $utils.showToast('插屏广告加载成功')
+        interstitialAd.show().then(() => {
+          console.log('插屏广告show成功')
+        }, (err) => {
+          console.log(err)
+          interstitialAd = null
+          $utils.showToast(`插屏广告show失败, err = ${JSON.stringify(err)}`)
+        })
+      }, (err) => {
+        interstitialAd = null
+        $utils.showToast(`插屏广告onload失败, err = ${JSON.stringify(err)}`)
+      })
+      interstitialAd.onClose(()=>{
+        interstitialAd.destroy()
+        interstitialAd = null
+      })
+      interstitialAd.onError((err)=>{
+        interstitialAd.destroy()
+        interstitialAd = null
+        $utils.showToast(`插屏广告onload失败, err = ${JSON.stringify(err)}`)
+      })
+    } else {
+      interstitialAd.show().then(() => {
+          console.log('插屏广告show成功')
+      })
+    }
+  },
+
+  // 原生广告
+  onShowAdsNative() {
+    let that = this
+    const adUnitId = this.mockAdunitId('native')
+    const nativeAd = fad.createNativeAd({ adUnitId })
+    nativeAd.load()
+    nativeAd.onLoad(function (res) {
+      if (res.adList && res.adList.length > 0) {
+        that.nativeAdInfo = res.adList[0]
+      }
+    },(err) => {
+      console.log(err)
+    })
+    nativeAd.onError((err) => {
+      console.log(err)
+    })
+  },
+
+  // web广告
+  onShowAdsWeb() {
+    const url = 'https://engine.tuifish.com/index/activity?appKey=3poN98XSpJpGtBaXvLkDSaKdKPzn&adslotId=428872&uk_a1=__IMEI__&uk_a2=__IMEI2__&uk_a3=__MUID__&uk_b1=__IDFA__&uk_b2=__IDFA2__&uk_c1=__OAID__&uk_c2=__OAID2__'
+    let faWeb = new FADSDK({ provider: 'web' })
+    const nativeAd = faWeb.createWebAd({ url })
+  }
+}
+</script>
+
+<style lang="less">
+@import '/src/assets/styles/style.less';
+
+.wrapper {
+  .flex-box-mixins(column, center, center);
+  .title {
+    font-size: 8 * @size-factor;
+    text-align: center;
+    color: @black;
+  }
+  .time-desc {
+    color: #333333;
+    margin-top: 80px;
+  }
+  .btn {
+    width: 90 * @size-factor;
+    height: 16 * @size-factor;
+    border-radius: 8 * @size-factor;
+    background-color: @brand;
+    color: @white;
+    font-size: 30px;
+    margin-top: 16 * @size-factor;
+  }
+  .active {
+    background-color: #808080;
+  }
+
+  .ad__wrapper {
+    width: 94%;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 24px;
+    background-color: white;
+
+    .image_box {
+      width: 180px;
+      height: 200px;
+      position: relative;
+      margin: 0 20px;
+      .item_wrapper {
+        position: relative;
+
+        image {
+          height: 100%;
+          border-radius: 24px;
+        }
+        text {
+          position: absolute;
+          right: 0;
+          bottom: 0px;
+          padding: 2px 10px;
+          color: #efefef;
+          border-radius: 12px;
+          border-bottom-right-radius: 24px;
+          background-color: #cccccc;
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,43 @@
+{
+  "name": "quickapp",
+  "version": "1.0.0",
+  "description": "蜜橙小说",
+  "license": "MIT",
+  "scripts": {
+    "start": "hap server --watch",
+    "build": "hap build",
+    "release": "hap release",
+    "server": "hap server",
+    "watch": "hap watch",
+    "resign": "hap resign --sign sign/ --file dist/444.rpk --origin dist --dest dest",
+    "prettier": "node ./scripts/selfCloseInputTag.js && prettier --write 'src/**/*.ux' 'src/**/*.js' 'src/**/*.json'"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/eslint-parser": "^7.15.0",
+    "@babel/preset-env": "^7.18.10",
+    "@types/quickapp": "npm:quickapp-interface@^1.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-vue": "^8.4.1",
+    "hap-toolkit": "^1.9.10",
+    "js-base64": "^3.6.1",
+    "less": "^4.1.1",
+    "less-loader": "^10.0.1",
+    "prettier": "^2.3.2",
+    "prettier-plugin-ux": "^0.3.0"
+  },
+  "browserslist": [
+    "chrome 65"
+  ],
+  "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
+    "@babel/runtime": "^7.19.0",
+    "babel-eslint": "^10.1.0",
+    "date-fns": "^2.29.3",
+    "webpack": "5.0.0"
+  }
+}

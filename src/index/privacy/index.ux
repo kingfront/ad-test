@@ -1,0 +1,128 @@
+<template>
+  <div>
+    <div if="{{ showSelf }}" class="dialog__wrapper">
+      <div class="dialog">
+        <text class="title">用户协议和隐私政策</text>
+        <text class="text" @click="onLinkClick">
+          <span style="margin-bottom: 20px"
+            >我们郑重承诺重视并保护⽤⼾的个⼈信息。我们秉承“⼀切以⽤⼾价值为依归”的理念，增强您对信息管理的便捷性，保障您的信息及通信安全。我们严格遵守法律法规，遵循以下隐私保护原则，提供更加安全、可靠的服务。
+          </span>
+        </text>
+        <text class="text" style="margin-top: 0" @click="onLinkClick">
+          <span>为了让您更好的使⽤我们提供的服务，请充分阅读并理解<span class="link">《隐私政策》</span>，如果您同意，请点击下⾯的按钮以接受我们的服务。 </span>
+        </text>
+        <div class="buttons">
+          <text class="button button-cancel" @click="onDisagree">取消</text>
+          <text class="button button-primary" @click="onAgreeAndContinue">我已阅读并同意</text>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import storage from '@system.storage'
+import webview from '@system.webview'
+
+export default {
+  data: {
+    showSelf: false,
+  },
+  async onInit() {
+    const result = await storage.get({ key: 'PrivacyVisited' })
+    if (result.data) return
+    this.showSelf = true
+  },
+  onLinkClick() {
+    const { name, companyName } = this.$app.$def.manifest
+    const url = 'https://cms.tianjinzhaofa.cn/index.php?m=home&c=View&a=index&aid=299'
+    webview.loadUrl({ url })
+  },
+  onDisagree() {
+    this.$app.exit()
+  },
+  onAgreeAndContinue() {
+    this.showSelf = false
+    storage.set({ key: 'PrivacyVisited', value: 'true' })
+  },
+}
+</script>
+
+<style lang="less">
+.dialog__wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  animation-name: FadeIn;
+  animation-duration: 300ms;
+  .dialog {
+    flex-direction: column;
+    width: 100%;
+    margin: 0 40px;
+    background-color: #fff;
+    border-radius: 20px;
+    .title {
+      color: #db1d14;
+      font-size: 34px;
+      font-weight: bold;
+      padding-top: 50px;
+      text-align: center;
+    }
+    .text {
+      margin: 40px;
+      color: #7a6e6e;
+      font-size: 26px;
+      line-height: 48px;
+      .link {
+        color: #db1d14;
+      }
+    }
+
+    .buttons {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px 40px;
+      border-top: 1px solid #e5e3e3;
+      .button {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .button-primary {
+        margin-top: 10px;
+        width: 45%;
+        height: 40px;
+        color: #db1d14;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .button:active {
+        opacity: 0.6;
+      }
+
+      .button-cancel {
+        width: 45%;
+        height: 40px;
+        color: #26100f;
+      }
+    }
+  }
+}
+
+@keyframes FadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+</style>
