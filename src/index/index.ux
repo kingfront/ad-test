@@ -60,7 +60,7 @@ export default {
       vivo: {
         rewarded: 'e936776f5ed3432f9d7bf8439b9234c5',
         interstitial: '1e8d7f6f1fae48e384f0a087a7498c2a',
-        banner: '644127',
+        banner: 'a60e944b0d294a66a1d34f2ff7fd8d78',
         native: '50ee074acbb84fac868a3f69a6b7fdd4'
       },
       OPPO: {
@@ -89,18 +89,15 @@ export default {
 
   // banner 广告
   onShowAdsBanner() {
-    $utils.showToast('暂无广告位')
     const adUnitId = this.mockAdunitId('banner')
-    let bannerAd = fad.createBannerAd({
-      adUnitId,
-      style: {
-        width: 375
-      }
-    })
-    bannerAd.onLoad().then(() => {
+    let bannerAd = fad.createBannerAd({ adUnitId })
+    bannerAd.show()
+    bannerAd.onLoad(() => {
       $utils.showToast('banner广告加载成功')
-      bannerAd.show()
     }, (err) => {
+      $utils.showToast(`banner广告onload失败, err = ${JSON.stringify(err)}`)
+    })
+    bannerAd.onError((err) => {
       $utils.showToast(`banner广告onload失败, err = ${JSON.stringify(err)}`)
     })
 
