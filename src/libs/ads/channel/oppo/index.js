@@ -6,7 +6,8 @@ const ad = require('@service.ad')
 export default {
     // 创建激励视频
     createRewardedVideoAd(obj) {
-        return ad.createRewardedVideoAd(obj)
+        let reward =  ad.createRewardedVideoAd(obj)
+        return reward
     },
     // Banner广告
     createBannerAd(obj) {

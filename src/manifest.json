@@ -5,8 +5,64 @@
   "versionCode": 108,
   "minPlatformVersion": 1080,
   "icon": "/assets/logo.png",
-  "features": [{ "name": "system.prompt" }, { "name": "system.router" }, { "name": "system.shortcut" }, { "name": "system.webview" }, { "name": "service.share" }, { "name": "system.fetch" }, { "name": "system.storage" }, { "name": "system.device" }, { "name": "service.texttoaudio" }, { "name": "service.ad" },{ "name": "system.webview" }],
-  "permissions": [{ "origin": "*" }],
+  "features": [
+    {
+      "name": "system.prompt"
+    },
+    {
+      "name": "system.router"
+    },
+    {
+      "name": "system.shortcut"
+    },
+    {
+      "name": "system.webview"
+    },
+    {
+      "name": "service.share"
+    },
+    {
+      "name": "system.fetch"
+    },
+    {
+      "name": "system.storage"
+    },
+    {
+      "name": "system.device"
+    },
+    {
+      "name": "service.texttoaudio"
+    },
+    {
+      "name": "service.ad"
+    },
+    {
+      "name": "system.webview"
+    },
+    {
+      "name": "system.network"
+    },
+    {
+      "name": "system.package"
+    },
+    {
+      "name": "system.request"
+    },
+    {
+      "name": "service.account"
+    },
+    {
+      "name": "system.sensor"
+    },
+    {
+      "name": "system.file"
+    }
+  ],
+  "permissions": [
+    {
+      "origin": "*"
+    }
+  ],
   "config": {
     "logLevel": "debug",
     "designWidth": 750
@@ -15,6 +71,9 @@
     "entry": "index",
     "pages": {
       "index": {
+        "component": "index"
+      },
+      "UnionAd/AdReward": {
         "component": "index"
       }
     }
@@ -29,7 +88,16 @@
         "titleBar": false,
         "statusBarImmersive": true,
         "statusBarBackgroundOpacity": 0
-      }
+      },
+      "UnionAd/AdReward": {
+        "fullScreen": true,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menu": false,
+        "menuBarData": {
+            "menuBar": false
+        }
+    }
     }
   },
   "API_HOST": "https://api.tianjinzhaofa.cn"

@@ -1,18 +1,23 @@
+<import name="mobads-ad" src="union-quick-app-ad/components/mobadsAd"></import>
 <template>
   <div class="wrapper">
-    <input class="btn" type="button" value="激励视频" onclick="onShowAdsRewarded" />
-    <input class="btn" type="button" value="banner" onclick="onShowAdsBanner" />
-    <input class="btn" type="button" value="插屏" onclick="onShowAdsInterstitial" />
-    <input class="btn" type="button" value="原生广告" onclick="onShowAdsNative" />
-    <input class="btn" type="button" value="web" onclick="onShowAdsWeb" />
+    <input class="btn {{tabIndex == 'onShowAdsRewarded' ? 'active':''}}" type="button" value="激励视频" onclick="onShowAdsRewarded" />
+    <input class="btn {{tabIndex == 'onShowAdsBanner' ? 'active':''}}" type="button" value="banner" onclick="onShowAdsBanner" />
+    <input class="btn {{tabIndex == 'onShowAdsInterstitial' ? 'active':''}}" type="button" value="插屏" onclick="onShowAdsInterstitial" />
+    <input class="btn {{tabIndex == 'onShowAdsNative' ? 'active':''}}" type="button" value="原生广告" onclick="onShowAdsNative" />
+    <input class="btn {{tabIndex == 'onShowAdsWeb' ? 'active':''}}" type="button" value="web" onclick="onShowAdsWeb" />
+    <input class="btn {{tabIndex == 'onShowAdsBaiduReward' ? 'active':''}}" type="button" value="百度激励视频" onclick="onShowAdsBaiduReward" />
+    <input class="btn {{tabIndex == 'onShowAdsBaiduInterstitial' ? 'active':''}}" type="button" value="百度插屏" onclick="onShowAdsBaiduInterstitial" />
+
     <div if="{{ nativeAdInfo }}" class="ad__wrapper">
       <div for="{{nativeAdInfo && nativeAdInfo.imgUrlList}}" tid="uniqueId" class="image_box">
         <div class="item_wrapper" @click="onAdClick">
           <image src="{{$item}}"></image>
-          <text>广告</text>
+          <text>原生广告</text>
         </div>
       </div>
     </div>
+    <mobads-ad apid="8461258" appid="e9bb42dc" type="int" visible="{{intVisibleBaiduInterstitial}}"></mobads-ad>
   </div>
 </template>
 
@@ -22,9 +27,11 @@ import prompt from '@system.prompt'
 import device from '@system.device'
 import FADSDK from '/src/libs/ads/FADSDK'
 import ad from '@service.ad'
+import UNION_AD_SDK from 'union-quick-app-ad/app.js';
 
 let fad
 let interstitialAd
+let revideo
 export default {
   private: {
     showAd: false,
@@ -32,8 +39,12 @@ export default {
     nativeAdInfo: {},
     adsRepeatFlg: false,
     provider: '',
+    tabIndex: '',
+    baiduRewardFlg: false,
+    intVisibleBaiduInterstitial: false,
     adUnitId: 'e936776f5ed3432f9d7bf8439b9234c5'
   },
+
 
   // 初始化
   onInit() {
@@ -50,7 +61,7 @@ export default {
         rewarded: 'e936776f5ed3432f9d7bf8439b9234c5',
         interstitial: '1e8d7f6f1fae48e384f0a087a7498c2a',
         banner: '644127',
-        native: '192cf47e6c844f25954a9cdc38b97244'
+        native: '50ee074acbb84fac868a3f69a6b7fdd4'
       },
       OPPO: {
         rewarded: '644125',
@@ -65,13 +76,15 @@ export default {
   // 激励视频
   onShowAdsRewarded() {
     const adUnitId = this.mockAdunitId('rewarded')
-    const revideo = fad.createRewardedVideoAd({ adUnitId })
+    revideo = fad.createRewardedVideoAd({ adUnitId })
+    revideo.load()
     revideo.onLoad(() => {
-      $utils.showToast('激励视频加载成功222')
+      $utils.showToast('激励视频加载成功')
       revideo.show()
     }, (err) => {
       $utils.showToast(`激励视频load 失败, err = ${JSON.stringify(err)}`)
     })
+    this.hoverTap('onShowAdsRewarded')
   },
 
   // banner 广告
@@ -90,6 +103,8 @@ export default {
     }, (err) => {
       $utils.showToast(`banner广告onload失败, err = ${JSON.stringify(err)}`)
     })
+
+    this.hoverTap('onShowAdsBanner')
   },
 
   // 插屏广告
@@ -110,38 +125,79 @@ export default {
         interstitialAd = null
         $utils.showToast(`插屏广告onload失败, err = ${JSON.stringify(err)}`)
       })
-      interstitialAd.onClose(()=>{
+      interstitialAd.onClose(() => {
         interstitialAd.destroy()
         interstitialAd = null
       })
-      interstitialAd.onError((err)=>{
+      interstitialAd.onError((err) => {
         interstitialAd.destroy()
         interstitialAd = null
         $utils.showToast(`插屏广告onload失败, err = ${JSON.stringify(err)}`)
       })
     } else {
       interstitialAd.show().then(() => {
-          console.log('插屏广告show成功')
+        console.log('插屏广告show成功')
       })
     }
+
+    this.hoverTap('onShowAdsInterstitial')
+  },
+
+  // 百度激励视频
+  onShowAdsBaiduReward() {
+    let that = this
+    that.baiduRewardFlg = false
+    let fadBaidu = new FADSDK({ provider: 'baidu' })
+    let rewardAd = fadBaidu.createRewardedVideoAd({
+      apid: '8461252',
+      type: 'rvideo',
+      appid: 'e9bb42dc'
+    });
+    rewardAd.onLoad(function (res) {
+      // 关闭视频后，会再次触发onLoad函数
+      if (!that.baiduRewardFlg) {
+        rewardAd.show();
+        that.baiduRewardFlg = true
+      }
+      $utils.showToast(`百度激励视频load ${JSON.stringify(res)}`)
+    })
+    rewardAd.onClose(function (data) {
+      $utils.showToast('关闭百度激励视频')
+    })
+    rewardAd.onError(function (data) {
+      $utils.showToast(`百度激励视频error ${JSON.stringify(data)}`)
+    })
+    rewardAd.load();
+
+    this.hoverTap('onShowAdsBaiduReward')
+  },
+
+  // 百度插屏
+  onShowAdsBaiduInterstitial() {
+    this.intVisibleBaiduInterstitial = new Date().getTime();
+
+    this.hoverTap('onShowAdsBaiduInterstitial')
   },
 
   // 原生广告
   onShowAdsNative() {
+    // 需要同时兼容vivo、OPPO拉取原生广告
     let that = this
     const adUnitId = this.mockAdunitId('native')
-    const nativeAd = fad.createNativeAd({ adUnitId })
+    const nativeAd = fad.createNativeAd({ adUnitId, type: 'native' })
     nativeAd.load()
     nativeAd.onLoad(function (res) {
       if (res.adList && res.adList.length > 0) {
         that.nativeAdInfo = res.adList[0]
       }
-    },(err) => {
+    }, (err) => {
       console.log(err)
     })
     nativeAd.onError((err) => {
-      console.log(err)
+      console.log(1, err)
     })
+
+    this.hoverTap('onShowAdsNative')
   },
 
   // web广告
@@ -149,7 +205,18 @@ export default {
     const url = 'https://engine.tuifish.com/index/activity?appKey=3poN98XSpJpGtBaXvLkDSaKdKPzn&adslotId=428872&uk_a1=__IMEI__&uk_a2=__IMEI2__&uk_a3=__MUID__&uk_b1=__IDFA__&uk_b2=__IDFA2__&uk_c1=__OAID__&uk_c2=__OAID2__'
     let faWeb = new FADSDK({ provider: 'web' })
     const nativeAd = faWeb.createWebAd({ url })
-  }
+    this.hoverTap('onShowAdsWeb')
+  },
+
+
+  // 点击效果
+  hoverTap(key) {
+    let that = this
+    that.tabIndex = key
+    setTimeout(() => {
+      that.tabIndex = ''
+    }, 300)
+  },
 }
 </script>
 

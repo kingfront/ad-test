@@ -1,0 +1,45 @@
+<import name="union-ad" src="union-quick-app-ad/components/mobadsAd"></import>
+<template>
+    <div class="union-ad-wraper">
+        <union-ad
+            type="rsplash"
+            apid="7439506"
+            appid="d5aa0cd7"
+            entry="/Home"
+            openimg=""
+            @ad-show="onadShow"
+            @ad-click="adClick"
+            @ad-closed="onadClosed"
+            adstyle="{{style}}"
+        >
+        </union-ad>
+    </div>
+</template>
+<style scoped>
+.union-ad-wraper {
+    width: 100%;
+    height: 100%;
+}
+</style>
+<script>
+export default {
+    private: {
+        style: {
+            closeBtnStyle: {
+                // paddingTop: '20px',
+                // paddingRight: '10px',
+            },
+        },
+    },
+    protected: {},
+    onInit() {},
+    onadShow() {
+    },
+    adClick() {
+    },
+    onadClosed() {
+    },
+    onShow() {
+    },
+};
+</script>

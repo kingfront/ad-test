@@ -1,0 +1,27 @@
+<import name="ad-web" src="union-quick-app-ad/components/web"></import>
+<template>
+    <div>
+        <ad-web url="{{websrc}}"></ad-web>
+    </div>
+</template>
+<script>
+import router from '@system.router';
+export default {
+    data: {
+        websrc: '',
+    },
+    onInit() {
+        this.websrc = this.url;
+    },
+    onBackPress() {
+        if (this.entry) {
+            router.clear();
+            router.replace({
+                uri: this.entry,
+            });
+            return true;
+        }
+        return false;
+    },
+};
+</script>
