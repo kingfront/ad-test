@@ -55,7 +55,7 @@ export default {
   mockAdunitId(type) {
     const mockInfo = {
       vivo: {
-        rewarded: 'e936776f5ed3432f9d7bf8439b9234c5',
+        rewarded: '6390a919a58b4075b321811382d92aaf',
         interstitial: '1e8d7f6f1fae48e384f0a087a7498c2a',
         banner: 'a60e944b0d294a66a1d34f2ff7fd8d78',
         native: '50ee074acbb84fac868a3f69a6b7fdd4'
@@ -81,6 +81,9 @@ export default {
       revideo.show()
     }, (err) => {
       $utils.showToast(`激励视频load 失败, err = ${JSON.stringify(err)}`)
+    })
+    revideo.onError((err)=>{
+      $utils.showToast(`激励视频error, err = ${JSON.stringify(err)}`)
     })
     this.hoverTap('onShowAdsRewarded')
   },
