@@ -1,7 +1,7 @@
 {
   "name": "quickapp",
   "version": "1.0.0",
-  "description": "蜜橙小说",
+  "description": "ad-test",
   "license": "MIT",
   "scripts": {
     "start": "hap server --watch",

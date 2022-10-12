@@ -1,7 +1,7 @@
 {
-  "package": "com.coodong.novel",
+  "package": "com.tianjinzhaofa.weather",
   "name": "ad-test",
-  "versionName": "1.0.8",
+  "versionName": "1.0.1",
   "versionCode": 108,
   "minPlatformVersion": 1080,
   "icon": "/assets/logo.png",

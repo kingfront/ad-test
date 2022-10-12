@@ -6,7 +6,7 @@ class FADSDK {
     constructor({ provider }) {
         this.version = '1.0.0'
         this.ads = manufacturer[provider]
-        $utils.showToast(`当前机型：${provider}`)
+        $utils.showToast(`广告类型：${provider}`)
     }
     // 是否开启日志，测试阶段打开
     setLogDebug(debug) {

@@ -29,7 +29,6 @@ import FADSDK from '/src/libs/ads/FADSDK'
 import ad from '@service.ad'
 import UNION_AD_SDK from 'union-quick-app-ad/app.js';
 
-let fad
 let interstitialAd
 let revideo
 export default {
@@ -50,7 +49,6 @@ export default {
   onInit() {
     const ad = require("@service.ad")
     this.provider = ad.getProvider()
-    fad = new FADSDK({ provider: this.provider })
     this.$page.setTitleBar({ text: '广告聚合demo' })
   },
 
@@ -66,7 +64,7 @@ export default {
       OPPO: {
         rewarded: '644125',
         interstitial: '644107',
-        banner: '644127',
+        banner: '647109',
         native: '644127'
       }
     }
@@ -76,6 +74,7 @@ export default {
   // 激励视频
   onShowAdsRewarded() {
     const adUnitId = this.mockAdunitId('rewarded')
+    let fad = new FADSDK({ provider: this.provider })
     revideo = fad.createRewardedVideoAd({ adUnitId })
     revideo.load()
     revideo.onLoad(() => {
@@ -90,6 +89,7 @@ export default {
   // banner 广告
   onShowAdsBanner() {
     const adUnitId = this.mockAdunitId('banner')
+    let fad = new FADSDK({ provider: this.provider })
     let bannerAd = fad.createBannerAd({ adUnitId })
     bannerAd.show()
     bannerAd.onLoad(() => {
@@ -107,6 +107,7 @@ export default {
   // 插屏广告
   onShowAdsInterstitial() {
     const adUnitId = this.mockAdunitId('interstitial')
+    let fad = new FADSDK({ provider: this.provider })
     if (!interstitialAd) {
       interstitialAd = fad.createInterstitialAd({ adUnitId })
       interstitialAd.onLoad(() => {
@@ -162,7 +163,7 @@ export default {
       $utils.showToast('关闭百度激励视频')
     })
     rewardAd.onError(function (data) {
-      $utils.showToast(`百度激励视频error ${JSON.stringify(data)}`)
+      $utils.showToast(`请更换为 和美天气 的包名`)
     })
     rewardAd.load();
 
@@ -171,8 +172,8 @@ export default {
 
   // 百度插屏
   onShowAdsBaiduInterstitial() {
-    this.intVisibleBaiduInterstitial = new Date().getTime();
 
+    this.intVisibleBaiduInterstitial = new Date().getTime();
     this.hoverTap('onShowAdsBaiduInterstitial')
   },
 
@@ -181,6 +182,7 @@ export default {
     // 需要同时兼容vivo、OPPO拉取原生广告
     let that = this
     const adUnitId = this.mockAdunitId('native')
+    let fad = new FADSDK({ provider: this.provider })
     fad.preloadAd({
       adUnitId, type: 'native',
       success: (res) => {
