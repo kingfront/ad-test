@@ -2,7 +2,7 @@
 import './global'
 const $utils = require('./helper/utils').default
 const $apis = require('./helper/apis').default
-import UNION_AD_SDK from 'union-quick-app-ad/app.js';
+import UNION_AD_SDK from 'union-quick-app-ad/app.js'
 
 /* @desc: 注入方法至全局 global,以便页面调用 */
 const hook2global = global.__proto__ || global
@@ -14,7 +14,7 @@ export default {
       new UNION_AD_SDK(this);
       setGlobalData('App', this)
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
     }
   }
 }

@@ -44,7 +44,6 @@ export default {
     adUnitId: 'e936776f5ed3432f9d7bf8439b9234c5'
   },
 
-
   // 初始化
   onInit() {
     const ad = require("@service.ad")
@@ -163,7 +162,7 @@ export default {
       $utils.showToast('关闭百度激励视频')
     })
     rewardAd.onError(function (data) {
-      $utils.showToast(`请更换为 和美天气 的包名`)
+      $utils.showToast(`百度激励视频异常 ${JSON.stringify(data)}`)
     })
     rewardAd.load();
 
