@@ -1,5 +1,9 @@
 # ad-test
 
+## 安装
+
+- npm install
+
 ## 支持广告类型
 
 - vivo: 激励视频、插屏、banner、原生
