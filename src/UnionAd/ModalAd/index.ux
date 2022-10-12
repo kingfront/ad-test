@@ -1,8 +1,8 @@
-<import name="union-ad" src="union-quick-app-ad/components/mobadsAd"></import>
+<import name="mobads-ad" src="union-quick-app-ad/components/mobadsAd"></import>
 <template>
   <div class="union-ad-wraper">
     <div class="blank"></div>
-    <union-ad type="rvideo" apid="{{apid}}" appid="{{appid}}" class="union-ad" @on-close="customClick"> </union-ad>
+    <mobads-ad apid="8461258" appid="e9bb42dc" type="int" visible="{{true}}"></mobads-ad>
   </div>
 </template>
 
@@ -17,6 +17,9 @@
   width: 100%;
   height: 100%;
 }
+.union-ad .reward-ad {
+  margin-top: 200px !important;
+}
 .blank {
   height: 100px;
   width: 100%;
@@ -25,15 +28,19 @@
 </style>
 <script>
 export default {
-    data: {
-    },
-    onInit() {
-    },
-    onBackPress() {
-        return true;
-    },
-    onShow() {
-        // 曝光
-    }
+  props: {
+   
+  },
+  data: {
+
+  },
+  onInit() {
+  },
+  onBackPress() {
+    return true;
+  },
+  onShow() {
+    // 曝光
+  }
 };
 </script>

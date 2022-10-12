@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <mobads-ad apid="8461258" appid="e9bb42dc" type="int" visible="{{intVisibleBaiduInterstitial}}"></mobads-ad>
+    <mobads-ad @ad-show="onShowBaiduMobads" apid="8461258" appid="e9bb42dc" type="int" visible="{{intVisibleBaiduInterstitial}}"></mobads-ad>
   </div>
 </template>
 
@@ -281,5 +281,13 @@ export default {
       }
     }
   }
+}
+.mobads-ad .int-ad .ad-mask .int-main{
+  margin-top: 300px !important;
+  width: 80%;
+  height: 80%;
+}
+.int-content{
+  margin-top: 100px !important;
 }
 </style>
